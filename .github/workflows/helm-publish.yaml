@@ -8,8 +8,8 @@ on:
 
 env:
  # ARGO_SERVER: ${{ env.ARGO_SERVER }} # Set these variables on Settings -> Secrets & variables -> actions
-  CHART_SERVER: ${{ env.CHART_SERVER }}
-  CHART_USER: ${{ env.CHART_USER }}
+  CHART_SERVER: https://chart.20.103.115.121.nip.io
+  CHART_USER: admin
   CHART_ROOT_FOLDER: charts
 
 jobs:
