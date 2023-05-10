@@ -1,0 +1,63 @@
+name: Push Docker Image to GHR
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  # Use docker.io for Docker Hub if empty
+  REGISTRY: ghcr.io
+  # github.repository as <account>/<repo>
+  IMAGE_NAME: ${{ github.repository }}
+  CHART_ROOT_FOLDER: charts
+
+jobs:
+
+  build-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set ENV variables
+        run: |
+          REPO_NAME=${GITHUB_REPOSITORY#*/}
+          CHART_APP_FOLDER="${CHART_ROOT_FOLDER}/${REPO_NAME}"
+          echo "REPO_NAME=${REPO_NAME}" >> "$GITHUB_ENV"
+          echo "CHART_APP_FOLDER=${CHART_APP_FOLDER}" >> "$GITHUB_ENV"
+
+      - name: Set Application version 
+        run: |
+          OUTPUT=$(grep ^appVersion $CHART_APP_FOLDER/Chart.yaml | awk '{ print $2 }' | tr -d '"')
+          echo "APP_VERSION=$OUTPUT" >> "$GITHUB_ENV"
+
+      # https://github.com/docker/login-action
+      - name: Log into registry ${{ env.REGISTRY }}
+        uses: docker/login-action@v2.1.0
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+
+      # Build and push Docker image with Buildx (don't push on PR)
+      # https://github.com/docker/build-push-action
+      - name: Build and push Docker image
+        id: build-and-push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}:${{ env.APP_VERSION }}
+
+
