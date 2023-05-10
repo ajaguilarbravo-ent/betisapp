@@ -55,9 +55,9 @@ jobs:
         with:
           cmd: |
             yq -i '.ingress.annotations."cert-manager.io/cluster-issuer"="letsencrypt"' ${{ env.CHART_APP_FOLDER }}/values.yaml
-            PUBLIC=$PUBLIC RP=$REPO_NAME yq -i '.ingress.tls = {"hosts": [env(RP)+"."+env(PUBLIC)], "secretName": env(RP)+"-tls"}' ${{ env.CHART_APP_FOLDER }}/values.yaml
             PUBLIC=$PUBLIC RP=$REPO_NAME yq -i '.ingress.hosts[0] = {"host": env(RP)+"."+env(PUBLIC)}' ${{ env.CHART_APP_FOLDER }}/values.yaml
             yq -i '.ingress.hosts[0].paths[0].path = "/" | .ingress.hosts[0].paths[0].pathType= "ImplementationSpecific"' ${{ env.CHART_APP_FOLDER }}/values.yaml
+            PUBLIC=$PUBLIC RP=$REPO_NAME yq -i '.ingress.tls[0] = {"secretName": env(RP)+"-tls"} | .ingress.tls[0].hosts[0] = env(RP)+"."+env(PUBLIC)' ${{ env.CHART_APP_FOLDER }}/values.yaml
 
       - name: Commit changes
         run: |
