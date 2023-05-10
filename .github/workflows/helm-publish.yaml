@@ -7,8 +7,9 @@ on:
   workflow_dispatch:
 
 env:
-  ARGO_SERVER: ${{ env.ARGO_SERVER }} # Set these variables on Settings -> Secrets & variables -> actions
+ # ARGO_SERVER: ${{ env.ARGO_SERVER }} # Set these variables on Settings -> Secrets & variables -> actions
   CHART_SERVER: ${{ env.CHART_SERVER }}
+  CHART_USER: ${{ env.CHART_USER }}
   CHART_ROOT_FOLDER: charts
 
 jobs:
@@ -44,20 +45,20 @@ jobs:
         uses: bsord/helm-push@v4.1.0
         with:
           registry-url: ${{ env.CHART_SERVER }}
-          username: ${{ secrets.CHART_USER }}
+          username: ${{ env.CHART_USER }}
           password: ${{ secrets.CHART_PASSWD }}
           force: true
           chart-folder: ${{ env.CHART_APP_FOLDER }}
 
-      - name: Setup ArgoCD CLI 
-        uses: imajeetyadav/argocd-cli@v1
-        with:
-          version: v2.7.1 # optional 
+     # - name: Setup ArgoCD CLI 
+     #   uses: imajeetyadav/argocd-cli@v1
+     #   with:
+     #     version: v2.7.1 # optional 
       
-      - name: Check Argo CD CLI version
-        run: |
-          argocd login $ARGO_SERVER --username ${{ secrets.ARGO_USER }} --password ${{ secrets.ARGO_PASSWD }}
-          echo "argocd app set argocd/$REPO_NAME --project default --revision $CHART_VERSION"
+      # - name: Check Argo CD CLI version
+      #  run: |
+      #    argocd login $ARGO_SERVER --username ${{ secrets.ARGO_USER }} --password ${{ secrets.ARGO_PASSWD }}
+      #    echo "argocd app set argocd/$REPO_NAME --project default --revision $CHART_VERSION"
 
       # - name: Push Helm chart to OCI compatible registry (Github)
       #   uses: bsord/helm-push@v4.1.0
