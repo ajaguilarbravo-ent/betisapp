@@ -4,7 +4,7 @@
 
 replicaCount: 1
 image:
-  repository: ajaguilarbravo-ent/betisapp17
+  repository: ghcr.io/ajaguilarbravo-ent/betisapp17
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: ""
