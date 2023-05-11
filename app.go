@@ -16,7 +16,11 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/", func(c echo.Context) error {
-		return c.HTML(http.StatusOK, "Hello, Gophers!!! <3")
+		return c.HTML(http.StatusOK, "Hello, Criaturitas del Universo!!! <3")
+	})
+
+	e.GET("/betis", func(c echo.Context) error {
+		return c.HTML(http.StatusOK, "<p style='text-align:center;'><a href='https://en.realbetisbalompie.es' target='_blank'><img src='https://upload.wikimedia.org/wikipedia/en/thumb/1/13/Real_betis_logo.svg/1024px-Real_betis_logo.svg.png'></a></p>")
 	})
 
 	e.GET("/health", func(c echo.Context) error {
