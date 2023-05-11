@@ -17,4 +17,8 @@ COPY --from=build-stage /app /app
 
 EXPOSE 8080
 
+RUN chmod +x /app 
+
+USER nonroot:nonroot
+
 ENTRYPOINT ["/app"]
