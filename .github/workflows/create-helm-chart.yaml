@@ -73,7 +73,7 @@ jobs:
           force: true
       
       - name: Push tag
-      - uses: actions-ecosystem/action-push-tag@v1
+        uses: actions-ecosystem/action-push-tag@v1
         with:
           tag: '0.0.1'
           message: ''
