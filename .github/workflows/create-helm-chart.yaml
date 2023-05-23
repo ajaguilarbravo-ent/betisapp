@@ -65,17 +65,13 @@ jobs:
           git config --local user.name  "${GITHUB_ACTOR}"
           git add .
           git commit -m "Github actions - Chart creation"
-          
-      - name: Push tag
-        uses: thejeff77/action-push-tag@v1.0.0
-        with:
-          tag: '0.0.1'
-          message: 'First tag'
-          
+          git tag -a "v0.0.1" -m "First tag"
+                    
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          tags: true
           force: true
       
 
