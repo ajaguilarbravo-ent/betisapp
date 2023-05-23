@@ -65,16 +65,17 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add .
           git commit -m "Github actions - Chart creation"
-
+          
+      - name: Push tag
+        uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: '0.0.1'
+          message: 'Fist tag'
+          
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
       
-      - name: Push tag
-        uses: actions-ecosystem/action-push-tag@v1
-        with:
-          tag: '0.0.1'
-          message: ''
 
