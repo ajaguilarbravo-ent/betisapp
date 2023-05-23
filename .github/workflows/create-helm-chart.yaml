@@ -71,5 +71,10 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           force: true
-          
+      
+      - name: Push tag
+      - uses: actions-ecosystem/action-push-tag@v1
+        with:
+          tag: '0.0.1'
+          message: ''
 
